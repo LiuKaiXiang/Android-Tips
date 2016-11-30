@@ -13,3 +13,6 @@ MacDown在安装完成打开时会同时打开一个help.md文件，其中演示
 
 * 简明版 [Markdown 语法说明(简体中文版)](https://link.zhihu.com/?target=http%3A//wowubuntu.com/markdown/basic.html)
 * 完整版 [Markdown 语法说明(简体中文版)](https://link.zhihu.com/?target=http%3A//wowubuntu.com/markdown/index.html)
+
+## Github工作流
+不熟悉Github工作流的同学可以参考这篇文章 [Git Workflows and Tutorials](https://github.com/oldratlee/translations/tree/master/git-workflows-and-tutorials)。
