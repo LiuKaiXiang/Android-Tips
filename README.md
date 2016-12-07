@@ -22,6 +22,19 @@ MacDown在安装完成打开时会同时打开一个help.md文件，其中演示
 ### [Android6.0M权限实战,轻量级封装](https://github.com/linglongxin24/MPermissions)
 ### [Android悬浮窗权限检查及设置跳转](https://github.com/zhaozepeng/FloatWindowPermission)
 
+## .jar冲突
+```
+Error:Execution failed for task ':app:transformResourcesWithMergeJavaResForDebug'.
+	> com.android.build.api.transform.TransformException: com.android.builder.packaging.DuplicateFileException: Duplicate files copied in APK META-INF/services/javax.annotation.processing.Processor
+
+解决：build.gradle里
+	android {
+		packagingOptions {
+			exclude 'META-INF/services/javax.annotation.processing.Processor'
+			}
+	}
+```
+
 ## 编码技巧
 
 * 通过第三方库[butterknife](https://github.com/JakeWharton/butterknife)以注解的方式自动绑定UI和点击事件，安装[zelezny](http://plugins.jetbrains.com/plugin/7369)插件可自动生成代码（右键点击布局代码R.layout.activity_main，选择Generate...）。注意一定要同时依赖butterknife-compiler，否则会出现空异常和点击事件无效的问题
@@ -87,6 +100,68 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 }
 ```
 
+* 设置状态栏字体颜色
+```
+//设置小米状态栏字体,true是深色，false是浅色
+private boolean setMiuiStatusBarDarkMode(Activity activity, boolean darkmode) {
+	Class<? extends Window> clazz = activity.getWindow().getClass();
+	try {
+		int darkModeFlag = 0;
+		Class<?> layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
+		Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
+		darkModeFlag = field.getInt(layoutParams);
+		Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
+		extraFlagField.invoke(activity.getWindow(), darkmode ? darkModeFlag : 0, darkModeFlag);
+		return true;
+	} catch (Exception e) {
+		LogUtil.e(e.getMessage());
+	}
+	return false;
+}
 
+//设置魅族状态栏字体
+private boolean setMeizuStatusBarDarkIcon(Activity activity, boolean dark) {
+	boolean result = false;
+	if (activity != null) {
+		try {
+			WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
+			Field darkFlag = WindowManager.LayoutParams.class
+					.getDeclaredField("MEIZU_FLAG_DARK_STATUS_BAR_ICON");
+			Field meizuFlags = WindowManager.LayoutParams.class
+					.getDeclaredField("meizuFlags");
+			darkFlag.setAccessible(true);
+			meizuFlags.setAccessible(true);
+			int bit = darkFlag.getInt(null);
+			int value = meizuFlags.getInt(lp);
+			if (dark) {
+				value |= bit;
+			} else {
+				value &= ~bit;
+			}
+			meizuFlags.setInt(lp, value);
+			activity.getWindow().setAttributes(lp);
+			result = true;
+		} catch (Exception e) {
+			LogUtil.e(e.getMessage());
+		}
+	}
+	return result;
+}
+```
 
-
+* EditText设置回车键为搜索
+```
+//imeOptions也可在.xml里设置（android:imeOptions="actionSearch"）
+editText.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+	@Override
+	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+		if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+			//搜索函数
+			search();
+			return true;
+		}
+		return false;
+	}
+});
+```
