@@ -14,6 +14,13 @@ MacDown在安装完成打开时会同时打开一个help.md文件，其中演示
 * 简明版 [Markdown 语法说明(简体中文版)](https://link.zhihu.com/?target=http%3A//wowubuntu.com/markdown/basic.html)
 * 完整版 [Markdown 语法说明(简体中文版)](https://link.zhihu.com/?target=http%3A//wowubuntu.com/markdown/index.html)
 
+## MarkdownPad 2 秘钥
+* 邮箱地址：
+Soar360@live.com
+
+* 授权秘钥：
+GBPduHjWfJU1mZqcPM3BikjYKF6xKhlKIys3i1MU2eJHqWGImDHzWdD6xhMNLGVpbP2M5SN6bnxn2kSE8qHqNY5QaaRxmO3YSMHxlv2EYpjdwLcPwfeTG7kUdnhKE0vVy4RidP6Y2wZ0q74f47fzsZo45JE2hfQBFi2O9Jldjp1mW8HUpTtLA2a5/sQytXJUQl/QKO0jUQY4pa5CCx20sV1ClOTZtAGngSOJtIOFXK599sBr5aIEFyH0K7H4BoNMiiDMnxt1rD8Vb/ikJdhGMMQr0R4B+L3nWU97eaVPTRKfWGDE8/eAgKzpGwrQQoDh+nzX1xoVQ8NAuH+s4UcSeQ==
+
 ## Github工作流
 不熟悉Github工作流的同学可以参考这篇文章 [Git Workflows and Tutorials](https://github.com/oldratlee/translations/tree/master/git-workflows-and-tutorials)。在日常的代码提交中，要以此工作流的方式提交代码。
 
@@ -22,17 +29,18 @@ MacDown在安装完成打开时会同时打开一个help.md文件，其中演示
 ### [Android6.0M权限实战,轻量级封装](https://github.com/linglongxin24/MPermissions)
 ### [Android悬浮窗权限检查及设置跳转](https://github.com/zhaozepeng/FloatWindowPermission)
 
-## .jar冲突
-```
-Error:Execution failed for task ':app:transformResourcesWithMergeJavaResForDebug'.
-	> com.android.build.api.transform.TransformException: com.android.builder.packaging.DuplicateFileException: Duplicate files copied in APK META-INF/services/javax.annotation.processing.Processor
 
-解决：build.gradle里
-	android {
-		packagingOptions {
+## jar冲突
+### 注意"META-INF/"后面的文件
+Error:Execution failed for task ':app\:transformResourcesWithMergeJavaResForDebug'  \>com.android.build.api.transform.TransformException:com.android.builder.packaging.DuplicateFileException: Duplicate files copied in APK META-INF/`services/javax.annotation.processing.Processor`
+	
+```
+解决：build.gradle里添加
+android {
+	packagingOptions {
 			exclude 'META-INF/services/javax.annotation.processing.Processor'
-			}
-	}
+		}
+}
 ```
 
 ## 编码技巧
